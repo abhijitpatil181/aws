@@ -1,0 +1,14 @@
+service: aws-http-api
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-south-1
+
+functions:
+  helloFn:
+    handler: hello.handler
+    events:
+      - httpApi:
+          path: /
+          method: GET

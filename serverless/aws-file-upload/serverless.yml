@@ -1,0 +1,37 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: abhi181
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: aws-file-upload
+frameworkVersion: "4"
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-south-1
+  stage: dev
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - "s3: ListBucket"
+
+          Resource:
+            - "arn:aws:s3:::file-demo-123"
+
+        - Effect: Allow
+          Action:
+            - "s3: PutObject"
+            - "s3: GetObject"
+            - "s3: DeleteObject"
+
+          Resource:
+            - "arn:aws:s3:::file-demo-123/*"
+
+functions:
+  fileUploadFun:
+    handler: src/handler.upload
+    events:
+      - httpApi:
+          path: /file-upload
+          method: post
